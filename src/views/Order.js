@@ -24,23 +24,25 @@ export default function Pedidos() {
     return (
         <Grid container direction="row" className={classe.containerOrderList} >
             <Grid item xs>
-                <ButtonGroup variant="contained" color="primary" size="medium">
-                    <Button
-                        aria-label="añadir"
-                        onClick={() => {
-                            setCount(count + 1);
-                        }}
-                    >
-                        +
-                    </Button>
-                    <Button>{count}</Button>
+                <ButtonGroup variant="contained" color="primary" size="small" >
                     <Button
                         aria-label="quitar"
                         onClick={() => {
                             setCount(Math.max(count - 1, 0));
                         }}
+                        sx={{padding:0}}
                     >
                         -
+                    </Button>
+                    <Button sx={{padding:0}}>{count}</Button>
+                    <Button
+                        aria-label="añadir"
+                        onClick={() => {
+                            setCount(count + 1);
+                        }}
+                        sx={{padding:0}}
+                    >
+                        +
                     </Button>
                 </ButtonGroup>
             </Grid>
@@ -48,7 +50,7 @@ export default function Pedidos() {
                 <span className={classe.orderMenu}>{selectOrder(pedidos)}</span>
             </Grid>
             <Grid item xs>
-                <DeleteForeverIcon className={classe.btnDelete} />
+                <DeleteForeverIcon fontSize="large" className={classe.btnDelete} />
             </Grid>
         </Grid>
     )

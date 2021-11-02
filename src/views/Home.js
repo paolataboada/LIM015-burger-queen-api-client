@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import { AppBar, Box, Toolbar, Typography, IconButton, Stack, Button, Grid, ButtonGroup } from '@mui/material';
+import Pedidos from '../views/Order.js'
+import { getProducts } from '../services/Product.js';
+// Iconos de MUI
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Stack, Button, Grid, ButtonGroup } from '@mui/material';
+import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone';
 import { useStyles } from '../style/styleHome.js';
 import { useStyle } from '../style/styleOrder.js';
-import logo1 from '../img/logo1.png';
-import { getProducts } from '../services/Product.js';
-import Pedidos from '../views/Order.js'
-import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../style/styleLogin.js';
+import logo1 from '../img/logo1.png';
 
 export default function Home() {
 
@@ -24,15 +20,15 @@ export default function Home() {
   const ListarDesayuno = () => {
     // console.log('lista de DESAYUNO');
     getProducts('desayuno').then(producto => {
-      // console.log(producto);
+      console.log(producto._id);
       setBebidas('');
       setMenu('');
       setDesayunos(producto);
     });
   }
 
-  const ListarMenu = () =>{
-    getProducts('menú').then(producto=>{
+  const ListarMenu = () => {
+    getProducts('menú').then(producto => {
       setDesayunos('');
       setBebidas('');
       setMenu(producto);
@@ -40,8 +36,8 @@ export default function Home() {
     });
   }
 
-  const ListarBebidas = () =>{
-    getProducts('bebidas').then(producto=>{
+  const ListarBebidas = () => {
+    getProducts('bebidas').then(producto => {
       setDesayunos('');
       setMenu('');
       setBebidas(producto);
@@ -51,7 +47,6 @@ export default function Home() {
   const classes = useStyles();
   const classe = useStyle();
   return (
-    // <ThemeProvider theme={theme}>
     <Box className={classes.fondoHome} >
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" className={classes.Toolbar}>
@@ -76,15 +71,15 @@ export default function Home() {
             </Typography>
             <ThemeProvider theme={theme}>
               <ButtonGroup variant="contained" color="primary">
-                <Button size="small"><ArrowBackIosTwoToneIcon /></Button>
-                <Button size="small"><ExitToAppIcon /></Button>
+                <Button sx={{ width: '6vh', height: '4vh' }}><ArrowBackIosTwoToneIcon fontSize='small' /></Button>
+                <Button sx={{ width: '6vh', height: '4vh' }}><ExitToAppIcon fontSize='small' /></Button>
               </ButtonGroup>
             </ThemeProvider>
           </Toolbar>
         </AppBar>
 
-        <Grid container direction="row" alignItems="center" >
-          <Grid item xs={6} component='main' sx={{ backgroundColor: 'rgba(1 1 1 / 34%)' }}>
+        <Grid container direction="row" spacing={3} rowSpacing={1} >
+          <Grid item xs={6} component='main' sx={{ backgroundColor: 'rgba(1 1 1 / 34%)', paddingLeft: '50px' }}>
             <Stack spacing={2} direction="row" margin="3vh">
               <Button variant="contained" onClick={ListarDesayuno} size="large" sx={{ borderRadius: '30px', backgroundColor: '#fff', color: 'black', border: '3px solid #683524' }} >
                 DESAYUNO
@@ -96,55 +91,54 @@ export default function Home() {
                 BEBIDAS
               </Button>
             </Stack>
-            <ul style={{ color: 'white', alignItems: "center" }}>
+            {/* <ThemeProvider theme={theme}> */}
+            <ul className={classes.listas}>
               {desayunos && (
                 desayunos.map((desayuno) => (
                   <li key={desayuno._id}>
                     <Grid container direction='row' alignItems="center" >
-                      <Button item xs={6}>{desayuno.name}</Button>
-                      <Button item xs={6}>S/.{desayuno.price}</Button>
+                      <Button  xs={6}>{desayuno.name}</Button>
+                      <Button  xs={6}>S/.{desayuno.price}</Button>
                     </Grid>
                   </li>
                 ))
               )}
             </ul>
-            <ul style={{ color: 'white', alignItems: "center" }}>
+            <ul className={classes.listas}>
               {menu && (
                 menu.map((menus) => (
                   <li key={menus._id}>
-                    <Grid container direction='row' alignItems="center" >
-                      <Button item xs={6}>{menus.name}</Button>
-                      <Button item xs={6}>S/.{menus.price}</Button>
+                    <Grid container direction='row' alignItems="center">
+                      <Button  xs={6}>{menus.name}</Button>
+                      <Button  xs={6}>S/.{menus.price}</Button>
                     </Grid>
                   </li>
                 ))
               )}
             </ul>
-            <ul style={{ color: 'white', alignItems: "center" }}>
+            <ul className={classes.listas}>
               {bebidas && (
                 bebidas.map((bebida) => (
                   <li key={bebida._id}>
                     <Grid container direction='row' alignItems="center" >
-                      <ThemeProvider theme={theme}>
-                        <Button item xs={6}>{bebida.name}</Button>
-                        <Button item xs={6}>S/.{bebida.price}</Button>
-                      </ThemeProvider>
+                      {/* <ThemeProvider theme={theme}> */}
+                        <Button  xs={6}>{bebida.name}</Button>
+                        <Button  xs={6}>S/.{bebida.price}</Button>
+                      {/* </ThemeProvider> */}
                     </Grid>
                   </li>
                 ))
               )}
             </ul>
+            {/* </ThemeProvider> */}
           </Grid>
           <Grid item xs={6} component='main' color='warning'>
-            <h2 style={{ color: '#fff' }}>Lista de Pedidos</h2>
-            {/* <Grid direction="row"> */}
+            <h2 style={{ color: '#fff', padding: '24px 0' }}>Lista de Pedidos</h2>
             <Pedidos className={classe.containerOrderList} />
-            {/* </Grid> */}
           </Grid>
         </Grid>
       </Box>
     </Box>
-    // </ThemeProvider> 
   );
 }
 
